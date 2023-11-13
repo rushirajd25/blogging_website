@@ -1,0 +1,1 @@
+A blogging website made using django framework.
