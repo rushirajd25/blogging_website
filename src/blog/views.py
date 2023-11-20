@@ -5,22 +5,10 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .forms import CommentForm
 
 # Create your views here.
-def PostList(request):
-    object_list = Post.objects.filter(status=1).order_by('-created_on')
-    paginator = Paginator(object_list, 3)
-
-    page = request.GET.get('page')
-    try:
-        post_list = paginator.page(page)
-    except PageNotAnInteger:
-        post_list = paginator.page(1)
-    except EmptyPage:
-        post_list = paginator.page(paginator.num_pages)
-
-    return render(request,
-                  'index.html',
-                  {'page': page,
-                   'post_list': post_list})
+class PostList(generic.ListView):
+    queryset = Post.objects.filter(status=1).order_by('-created_on')
+    template_name = 'index.html'
+    paginate_by = 3
 
 def post_detail(request, slug):
     template_name = 'post_detail.html'
